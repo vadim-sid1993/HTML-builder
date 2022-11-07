@@ -1,3 +1,5 @@
+
+
 const fs = require('fs');
 const path = require('path');
 const { mkdir, rmdir, readdir, copyFile, unlink } = require('fs/promises');
@@ -37,7 +39,7 @@ async function buildAssets() {
     await clearDir(err, path.join(__dirname, 'project-dist', 'assets'));
     await copyDir(path.join(__dirname, 'assets'), path.join(__dirname, 'project-dist', 'assets'));
   });
-}
+};
 async function buildCss() {
   const output = fs.createWriteStream(path.join(__dirname, 'project-dist', 'style.css'));
   const files = await readdir(path.join(__dirname, 'styles'));
@@ -54,7 +56,7 @@ async function buildCss() {
       stream.on('error', (err) => console.log('Style building error:', err));
     }
   }
-}
+};
 const readStream = fs.createReadStream(path.join(__dirname, 'template.html'), 'utf-8');
 let htmlBuild = '';
 async function buildHtml() {
@@ -82,13 +84,10 @@ async function buildHtml() {
       }
     }
   });
-}
-async function combine() {
+};
+(async () => {
   await mkdir(path.join(__dirname, 'project-dist'), { recursive: true });
   await buildAssets();
   await buildCss();
   await buildHtml();
-}
-combine();
-
-
+})();
